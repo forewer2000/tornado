@@ -1,4 +1,4 @@
-PROJECT = 'prosak'
+PROJECT = 'TORNADO'
 PROJECT_VERSION = '1.0.0a'
 BOOTSTRAP_FILE = "core/tests/bootstrap.php"
 TESTS_PATH = "core/tests"
