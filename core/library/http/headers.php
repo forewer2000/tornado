@@ -33,12 +33,24 @@ class Headers {
         
     }
     
-    public function send() {
+    /**
+     * @return array - all the header field/value pairs in an array.
+     *          CURL compatible format
+     */
+    public function getFullHeader() {
+        $tmp = array();
         foreach ($this->headers as $field => $value) {
-            header("${field}: ${value}");
-        }
+            $tmp[] = "${field}: ${value}";
+        };
+        return $tmp;
     }
     
+    public function send() {   
+        foreach ($this->getFullHeader() as $head) {
+            header($head);
+        }
+    }
+
 }
 
 ?>
