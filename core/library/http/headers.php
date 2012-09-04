@@ -24,6 +24,9 @@ class Headers {
         return true;
     }
     
+    /**
+     * 
+     */
     public function getField($fieldName) {
         $fieldName = $this->dataUtil->strClean($fieldName);
         if (array_key_exists($fieldName, $this->headers)) {
