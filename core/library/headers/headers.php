@@ -1,6 +1,6 @@
 <?php
 
-namespace core\library\http;
+namespace core\library\headers;
 
 
 class Headers {

@@ -3,7 +3,7 @@
 namespace core\app;
 
 
-class Controller {
+class Solutioner {
 
     public function __construct() {
         
