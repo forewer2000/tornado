@@ -1,11 +1,15 @@
 {
     datas: [
         default: [],
-        poo: [a:"", b:"", c:""]
+        poo: [
+            name: {filter:"trim|upper", valid:"string"}, 
+            password: {filter:"trim", valid:"smin:10|complexity:3"}, 
+            email:{filter:"trim|lower", valid:"email"}
+        ]
     ]
     
     routes: {
-        default: {
+        poo: {
             "A" : "default",
             "B" : "home"
         }

@@ -148,5 +148,28 @@ ROUTE TREE
 
 ROUTE TREE(DATA TREE) -> VIEW TREE
 
+(data check) - (data modifiers) - result
+
+solution - X - no data
+
+route A: no - data -> general view 
+
+
+Client examples:
+$client->network->ip;
+$client->browser->useragent;
+$client->browser->arguments;
+$client->browser->name;
+
+$client->data->pollresult = $pollresult;
+$client->data->pollresult
+
+$client->browser->query 
+
+
+
+
+
+
 
 
