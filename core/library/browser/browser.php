@@ -93,7 +93,6 @@ abstract class AbstractBrowser {
         curl_setopt($this->curlHandler, CURLOPT_POSTFIELDS, $postData);
     }
     
-
     public function getResponse() {
         
     }

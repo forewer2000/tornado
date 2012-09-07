@@ -64,3 +64,89 @@ EXAMPLE APACHE:
     ErrorLog /var/log/apache2/tiesto-error.log
     CustomLog /var/log/apache2/tiesto-access.log combined
 </VirtualHost>
+
+
+
+SOLUTION TABLE:
+
+home_alpo = {
+    dataPackA {
+        name : {
+            infilter: "trim|upper", 
+            invalidor: "email|string|max400|min20" , 
+            outfilter: "nl2br|ucase", 
+            intransformer:["string:int", "user:booo"],
+        }
+    }
+    
+    routes: {
+        empty: "speller"
+    }
+    
+    
+}
+
+home {
+    views: {
+        menu {
+            DB:getmenu, filter: "trim", "onlypairs"
+        },
+        recent {
+            DB:getrecent:5, 
+        },
+        boform {
+            boform:
+        }
+    }
+    
+    request: {
+        boform: {filter:"trim", ...}
+    }
+    
+    routeA: boform: true|DB:save|PAGE3..
+    routeB: boform: false|
+}
+
+<layout>
+
+</layout>
+
+Init Client. ->
+
+solutioner:
+    dataIN -> infilter - invalidator - intransformer - dataMID -> 
+    
+data router:
+    noparam: - route A
+    posted:  - route B
+    error: - route C
+    
+Routes:
+    routeA: getDataFromDB: -> outfilter- outtransformer -> back to client
+    routeB: save -
+    
+
+
+{
+    if ($this->home_alpo->valid())
+}
+
+
+
+
+views ----|variables - subview|
+
+|header|menu|content|side|footer|
+
+content = |upper|side|lower|poll|
+
+|header|content|footer|
+
+VIEW TREE
+DATA TREE
+ROUTE TREE
+
+ROUTE TREE(DATA TREE) -> VIEW TREE
+
+
+

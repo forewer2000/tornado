@@ -14,7 +14,12 @@
         'browser',
         'headers'
     );
-    $loader->load($modulesToLoad);
+    try {
+        $loader->load($modulesToLoad);
+    } catch (Exception $e) {
+        echo $e->getMessage();
+        die();
+    }
     
     $session = new core\library\session\Session();
     $request = new core\library\request\Request($_SERVER, $_POST, $_GET, $_FILES);

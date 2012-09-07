@@ -1,0 +1,31 @@
+{
+    datas: [
+        default: [],
+        poo: [a:"", b:"", c:""]
+    ]
+    
+    routes: {
+        default: {
+            "A" : "default",
+            "B" : "home"
+        }
+    }
+    
+    db: {
+        default: "default"
+    }
+    
+    views: {
+        home: {
+            layout: {
+                header : "header",
+                footer : "footer",
+                content: {
+                    "part1" : "part1",
+                    "part2" : "part2"
+                }
+            }
+        }
+    }
+
+}
