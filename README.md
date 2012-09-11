@@ -165,7 +165,27 @@ $client->data->pollresult = $pollresult;
 $client->data->pollresult
 
 $client->browser->query 
+$client->browser->request->post
+$client->browser->request->get
+$client->browser->url
+$client->browser->url->host
+$client->browser->headers->cookie
+$c->browserUrl
+$c->browserRequestPost
 
+browser{
+    construct($request);
+    
+    getReqPost() {
+        return $this->request->posta;
+    }
+}
+
+try {
+    $solutioner->load($client->query);
+} catch (SolutionerException $e) {
+    ..
+}
 
 
 
