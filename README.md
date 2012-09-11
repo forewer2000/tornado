@@ -156,22 +156,19 @@ route A: no - data -> general view
 
 
 Client examples:
-$client->network->ip;
-$client->browser->useragent;
-$client->browser->arguments;
-$client->browser->name;
 
-$client->data->pollresult = $pollresult;
-$client->data->pollresult
+$cl = new Client(...);
+$cl->networkIp();
+$cl->browserUseragent();
+$cl->browserUrl();
+$cl->browserName();
 
-$client->browser->query 
-$client->browser->request->post
-$client->browser->request->get
-$client->browser->url
-$client->browser->url->host
-$client->browser->headers->cookie
-$c->browserUrl
-$c->browserRequestPost
+$cl->browserHeaderCookie();
+$cl->browserRequestPost();
+$cl->storagePollresult(...);
+
+$sl = new Solutioner(...);
+$sl->
 
 browser{
     construct($request);
