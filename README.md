@@ -184,7 +184,38 @@ try {
     ..
 }
 
+|request| -> |APACHE| -> |SITE ENTRY DIR| -> 
+|htaccess| -> |index|.
+/apps/test/www/index.php
 
+core init.
+    - load configurator
+    - load core configuration file
+    - create core client object
+    - create core solutioner object
+site init:
+    - load site configuration file
+    
+core:
+    load solutions into solutioner from site
+    load request from client
+    check for a solution
+    send result for client
+
+Core::
+$selfConf = new Configurator('core.yml');
+$client = new Client($coreConf->find('client'));
+$solutioner = new Solutioner($coreConf->find('solutioner'));
+$siteConf = new Configurator($client->..);
+$solutioner->query($client);
+$solutioner->fetch($siteConf->find('solutions'));
+$client->push($solutioner->findResult())
+
+Core::client
+Core::siteConfig
+
+
+    
 
 
 
