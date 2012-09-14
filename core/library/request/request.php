@@ -2,8 +2,12 @@
 
 namespace core\library\request;
 
+require_once __DIR__ . "/../core.php";
+require_once __DIR__ ."/requestAtom.php";
 
-class Request {
+use core\library\Core;
+
+class Request extends Core{
     
     const REQUEST_URI = 'REQUEST_URI';
     
@@ -13,32 +17,51 @@ class Request {
     
     private $pathParts; 
     
-    private $queryParts;
+    private $query_parts;
     
     private $server;
     
-    private $get;
+    protected $get;
     
-    private $post;
+    protected $post;
     
     private $files;
     
-    public function __construct($server, $post, $get, $files) {
+    public function __construct($server, $post_data,  $files) {
         $this->server   = $server;
-        $this->post     = $post;
-        $this->get      = $get;
         $this->files    = $files;
+        $this->post_data = $post_data;
+    }
+    
+    
+    private function loadGetData() {
+        $this->get = new requestAtom($this->query_parts);
+    }
+    
+    private function loadPostData() {
+        $this->post = new requestAtom($this->post_data);
+    }
+    
+    private function loadAnyData() {
+        $mixed = array_merge(
+            $this->query_parts, 
+            $this->post_data
+        );
+        $this->any = new requestAtom($mixed);
     }
     
     public function load() {
         $this->loadQueryParams();
         $this->loadPathParams();
+        $this->loadGetData();
+        $this->loadPostData();
+        $this->loadAnyData();
     }
     
     public function all() {
         $ret = new \StdClass();
         $ret->pathParts = $this->pathParts;
-        $ret->queryParts = $this->queryParts;
+        $ret->query_parts = $this->query_parts;
         $ret->get = $this->get;
         $ret->post = $this->post;
         $ret->files = $this->files;
@@ -46,10 +69,10 @@ class Request {
     }
     
     private function loadQueryParams() {
-        if ($this->queryParts !== NULL) {
+        if ($this->query_parts !== NULL) {
             return;
         }
-        $this->queryParts = array();
+        $this->query_parts = array();
         if (!array_key_exists(self::QUERY_STRING, $this->server)) {
             return;
         }
@@ -64,7 +87,7 @@ class Request {
             if (count($qpItem) !== 2) {
                 continue;
             }
-            $this->queryParts[$qpItem[0]] = $qpItem[1];
+            $this->query_parts[$qpItem[0]] = $qpItem[1];
         }
     }
     

@@ -2,57 +2,11 @@
 
 namespace core\library\browser;
 
-/**
- * This Browser class is the public part for a Browser management
- */
-class Browser extends AbstractBrowser {
 
-# These methods are for initialize a browser page request
-    
-    public function setUA($ua) {
-        parent::setUA($ua);
-    }
-    
-    public function attachCookie($cookie) {
-        parent::attachCookie($cookie);
-    }
-    
-    public function attachPostData($postData) {
-        parent::attachPostData($postData);
-    }
-    
-    public function attachFiles($files) {
-        parent::attachFiles($files);
-    }
-    
-    public function setHeaders($headers) {
-        parent::setHeaders($headers);
-    }
-    
+require_once __DIR__ . "/../core.php";
+use core\library\Core;
 
-# The load method try to access the url with all the parameters set below
-
-    public function load($url) {
-        parent::load($url);
-    }
-    
-
-#Getter methods will retreive any data returned after fetching the url
-
-    public function getHeaders() {
-        return parent::getHeaders();
-    }
-    
-    public function getResponse() {
-        return parent::getResponse();
-    }
-}
-
-
-
-
-
-abstract class AbstractBrowser {
+class Browser extends Core{
 
     const USER_AGENT = 'HTTP_USER_AGENT';
 
@@ -67,6 +21,11 @@ abstract class AbstractBrowser {
         }
 
         $this->cleanUp();
+    }
+    
+    
+    public function attachRequest($request) {
+        $this->request = $request;
     }
     
     private function cleanUp() {
@@ -84,7 +43,7 @@ abstract class AbstractBrowser {
         $this->userAgent = $ua;
     }
     
-    public function getUserAgent() {
+    public function userAgent() {
         return $this->userAgent;
     }
     

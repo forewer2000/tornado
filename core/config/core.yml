@@ -1,3 +1,5 @@
-coremapping:
+client:
     library: library
-    
+    test: test
+home:
+    goods: this is all

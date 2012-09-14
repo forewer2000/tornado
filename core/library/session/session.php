@@ -5,7 +5,7 @@ namespace core\library\session;
 
 class Session {
 
-    private $session_id;
+    protected $session_id;
     
     
     public function __construct() {
