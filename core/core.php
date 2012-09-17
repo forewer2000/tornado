@@ -4,6 +4,7 @@
     require_once "yaml/Parser.php";
     require_once "yaml/Inline.php";
     require_once "configurator.php";
+    require_once "application.php";
     require_once "library/client/client.php";
     require_once "library/session/session.php";
     require_once "library/request/request.php";
@@ -40,10 +41,16 @@
             $browser->attachRequest($request);
             
             self::$client->attachBrowser($browser);
-           // echo self::$client->browserRequestGetData('a');
-            //var_dump( self::$client->browserRequestGetData(array('a','b')) );
-            echo self::$client->browserUserAgent();
-            //print_r(self::$client->browserRequestAll());
+            
+            $app = new Application(getcwd());
+            $app_configurator = new Configurator($app->config());
+            $app_configurator->addParser($yaml);
+            $app->attachConfigurator($app_configurator);
+            
+            echo $app->path();
+            
+            
+            
         }
         
         static function run() {

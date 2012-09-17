@@ -12,7 +12,6 @@
     use core\Core;
     Core::init(CORE_CONFIG);
     Core::run();
-    var_dump(Core::$client->browserRequestAnyData(array('a','b')));
     echo Core::$client->sessionSid();
     //require_once "../../../core/boot.php";
 ?>
