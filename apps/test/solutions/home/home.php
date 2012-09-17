@@ -4,7 +4,7 @@
         }
         
         public function index() {
-            $this->view->testVariable = "This is a test variable";
+            $this->view->testvar = "This is a test variable";
         }
         
     }

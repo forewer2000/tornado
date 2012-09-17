@@ -66,7 +66,7 @@ class Solutioner {
         
         $this->view->attachTemplate($this->app->appPath(). 'view/home.html');
         $this->view->loadRenderer();
-        $solution_obj->view = $this->view;
+        $solution_obj->view = $this->view->renderer();
         $solution_obj->index();
         $this->result = $this->view->render();
     }
