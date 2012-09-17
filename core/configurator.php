@@ -19,7 +19,15 @@ class Configurator {
         $this->loaded       = false;
         
     }
-    
+
+    public function addValue($key, $val) {
+        try {
+            $this->find($key);
+            throw new \Exception();
+        } catch (\Exception $e) {
+            $this->config[$key] = (string)$val;
+        }
+    }
     
     public function addParser($parser) {
         $this->parser = $parser;
@@ -50,7 +58,7 @@ class Configurator {
         }
         
         if (!is_array($this->config)) {
-            throw new \Exception();
+            $this->config = array();
         }
 
         if (!array_key_exists($config_key, $this->config)) {

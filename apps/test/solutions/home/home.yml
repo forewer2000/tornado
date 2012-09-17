@@ -1,0 +1,6 @@
+get:
+    def:
+    poo: 
+        color: [filter:trim|upper, valid:string]
+        name: [filter:trim|lower, valid:string]
+        

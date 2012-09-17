@@ -23,6 +23,8 @@
         
         public static $client;
         
+        public static $app;
+        
         static function init($core_config) {
             $yaml = new Parser();
             self::$config = new Configurator($core_config);
@@ -42,15 +44,14 @@
             
             self::$client->attachBrowser($browser);
             
-            $app = new Application(getcwd());
-            $app_configurator = new Configurator($app->config());
+            self::$app = new Application(getcwd());
+            $app_configurator = new Configurator(self::$app->config());
             $app_configurator->addParser($yaml);
-            $app->attachConfigurator($app_configurator);
+            $paths = self::$client->browserRequestPaths();
+            $app_configurator->addValue('solution', array_shift($paths));
+            self::$app->attachConfigurator($app_configurator);
             
-            echo $app->path();
-            
-            
-            
+            echo self::$app->solution();
         }
         
         static function run() {

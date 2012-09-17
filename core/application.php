@@ -18,6 +18,10 @@ class Application {
     public function attachConfigurator($configurator) {
         $this->configurator = $configurator;
     }
+
+    public function solution() {
+        return $this->configurator->find('solution');        
+    }
     
     public function path() {
         if (!$this->config_path) {

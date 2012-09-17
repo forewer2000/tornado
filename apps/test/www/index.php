@@ -12,6 +12,6 @@
     use core\Core;
     Core::init(CORE_CONFIG);
     Core::run();
-    echo Core::$client->sessionSid();
+   // echo Core::$client->sessionSid();
     //require_once "../../../core/boot.php";
 ?>

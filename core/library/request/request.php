@@ -50,6 +50,10 @@ class Request extends Core{
         $this->any = new requestAtom($mixed);
     }
     
+    public function paths() {
+        return $this->pathParts;
+    }
+    
     public function load() {
         $this->loadQueryParams();
         $this->loadPathParams();
