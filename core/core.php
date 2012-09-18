@@ -5,6 +5,7 @@
     require_once "yaml/Inline.php";
     require_once "configurator.php";
     require_once "application.php";
+    require_once "solutioner.php";
     require_once "library/client/client.php";
     require_once "library/session/session.php";
     require_once "library/request/request.php";
@@ -50,8 +51,14 @@
             $paths = self::$client->browserRequestPaths();
             $app_configurator->addValue('solution', array_shift($paths));
             self::$app->attachConfigurator($app_configurator);
-            
             echo self::$app->solutionPath();
+            
+            
+            $solutioner = new Solutioner(self::$app->solution(), self::$app->solutionPath());
+            $solutioner_configurator = new Configurator($solutioner->configFile());
+            $solutioner_configurator->addParser($yaml);
+            $solutioner->attachConfigurator($solutioner_configurator);
+            $solutioner->load();
         }
         
         static function run() {
