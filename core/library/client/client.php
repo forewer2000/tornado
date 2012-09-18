@@ -44,11 +44,10 @@ class Client extends Core {
     public function id() {
         return $this->id;
     }
-    
-#the client could send a package of parameters. Here we can access from the outside    
 
-    public function package() {
-        return $this->request->all();
+    public function send($content) {
+        #to do | headers and all the other stuff
+        echo $content;
     }
 
 }

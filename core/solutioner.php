@@ -5,8 +5,6 @@ namespace core;
 
 class Solutioner {
 
-    private $solution_dir;
-    
     private $config_file;
     
     private $solution_file;
@@ -15,25 +13,33 @@ class Solutioner {
     
     private $configurator;
     
-    public function  __construct($solution, $solution_dir) {
-        $this->solution = $solution;
-        $this->solution_dir = $solution_dir;
+    private $view;
+    
+    private $result;
+    
+    
+    public function  __construct($app) {
+        $this->app = $app;
     }
     
     public function solutionDir($solution_dir) {
-        return $this->solution_dir;
+        return $this->app->solutionPath();;
     }
     
     public function attachConfigurator($configurator) {
         $this->configurator = $configurator;
     }
     
+    public function attachView($view) {
+        $this->view = $view;
+    }
+    
     public function setConfigFile() {
-        $this->config_file = $this->solution_dir.'/'.$this->solution.'.yml';
+        $this->config_file = $this->app->solutionPath().'/'.$this->app->solution().'.yml';
     }
     
     public function setSolutionFile() {
-        $this->solution_file = $this->solution_dir.'/'.$this->solution.'.php';
+        $this->solution_file = $this->app->solutionPath().'/'.$this->app->solution().'.php';
     }
     
     public function configFile() {
@@ -50,12 +56,23 @@ class Solutioner {
         return $this->solution_file;
     }
     
-    public function load() {
+    public function dispatch() {
         if (!file_exists($this->solutionFile())) {
             throw new \Exception("Solution file doesn't exists:".$this->solutionFile());
         }
         require_once $this->solutionFile();
-        echo "Solution Loaded";
+        $solution = \ucfirst(\strtolower($this->app->solution()));
+        $solution_obj = new $solution;
+        
+        $this->view->attachTemplate($this->app->appPath(). 'view/home.html');
+        $this->view->loadRenderer();
+        $solution_obj->view = $this->view;
+        $solution_obj->index();
+        $this->result = $this->view->render();
+    }
+    
+    public function result() {
+        return $this->result;
     }
     /*
     public function resolveDataIn() {

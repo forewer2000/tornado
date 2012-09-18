@@ -1,5 +1,5 @@
-client:
-    library: library
-    test: test
-home:
-    goods: this is all
+vendor:
+    phptaldir: phptal/PHPTAL-1.2.2/
+    yamldir: yaml/
+    
+clientconfig: client_config_stuff_here

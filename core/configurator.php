@@ -64,10 +64,16 @@ class Configurator {
             $this->config = array();
         }
 
-        if (!array_key_exists($config_key, $this->config)) {
-            throw new \Exception();
-        }
-        return $this->config[$config_key];
+        $config_key_parts = explode('/', $config_key);
+        
+        $actual = $this->config;
+        foreach ($config_key_parts as $cp) {
+            if (!array_key_exists($cp, $actual)) {
+                throw new \Exception();
+            }
+            $actual = $actual[$cp];
+        };
+        return $actual;
     }
 }
 
