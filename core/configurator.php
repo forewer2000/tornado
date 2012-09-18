@@ -34,6 +34,9 @@ class Configurator {
     }
     
     private function load() {
+        if (!file_exists($this->config_url)) {
+            throw new \Exception('file doesn\'t exists:'.$this->config_url);
+        }
         $this->raw_config = @file_get_contents($this->config_url);
     }
     

@@ -45,13 +45,13 @@
             self::$client->attachBrowser($browser);
             
             self::$app = new Application(getcwd());
-            $app_configurator = new Configurator(self::$app->config());
+            $app_configurator = new Configurator(self::$app->configPath());
             $app_configurator->addParser($yaml);
             $paths = self::$client->browserRequestPaths();
             $app_configurator->addValue('solution', array_shift($paths));
             self::$app->attachConfigurator($app_configurator);
             
-            echo self::$app->solution();
+            echo self::$app->solutionPath();
         }
         
         static function run() {

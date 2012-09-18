@@ -5,7 +5,7 @@ class Application {
 
     private $base_path;
     
-    private $config_path;
+    private $app_path;
     
     private $config_file;
     
@@ -20,19 +20,28 @@ class Application {
     }
 
     public function solution() {
-        return $this->configurator->find('solution');        
-    }
-    
-    public function path() {
-        if (!$this->config_path) {
-            $this->config_path = $this->index_dir .'/../';
+        $solution = $this->configurator->find('solution');
+        if (!$solution) {
+            $solution = $this->configurator->find('default_solution');
         }
-        return $this->config_path;
+        return $solution;
     }
     
-    public function config() {
-        return $this->config_path . self::CONFIG_PATH;
+    public function appPath() {
+        if (!$this->app_path) {
+            $this->app_path = $this->index_dir .'/../';
+        }
+        return $this->app_path;
     }
+    
+    public function configPath() {
+        return $this->appPath() . self::CONFIG_PATH;
+    }
+    
+    public function solutionPath() {
+        return $this->appPath() . 'solutions/'. $this->solution();
+    }
+    
 }
 
 ?>
