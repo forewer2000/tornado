@@ -4,16 +4,14 @@ namespace core;
 
 class TalLoader implements  ViewInterface{
 
-    private $tal_dir;
-    
+
     private $renderer;
     
-    public function __construct($tal_dir) {
-        $this->tal_dir = $tal_dir;
+    public function __construct() {
     }
     
     public function loadRenderer() {
-        require_once $this->tal_dir.'/PHPTAL.php';
+        //require_once $this->tal_dir.'/PHPTAL.php';
         $this->renderer = new \PHPTAL($this->template_file);
     }
     

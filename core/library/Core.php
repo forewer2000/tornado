@@ -1,5 +1,6 @@
 <?php
-namespace core\library;
+namespace core\library
+;
 require_once "exception/nonexistentCommandException.php";
 require_once "exception/invalidCommandException.php";
 require_once "exception/nonexistentSubcommandException.php";
@@ -14,6 +15,12 @@ use core\library\exception\privateCommandException;
 
 abstract class Core {
 
+	private $lastCmd;
+	
+	public function lastCommand() {
+		return $this->lastCmd;
+	}
+	
     /**
      * Make it possible to recursively call methods between object chains.
      * $cmd (string): A camel cased command with lowercase first letter. 
@@ -27,15 +34,15 @@ abstract class Core {
         if (!$res || !$res[1]) {
             throw new invalidCommandException();
         } 
-        $mainCmd    = $res[1];
-        $subCmd     = substr($cmd, strlen($mainCmd));
-
+        $mainCmd   		 = $res[1];
+        $subCmd    		 = substr($cmd, strlen($mainCmd));
+		$this->lastCmd 	 = $mainCmd;
 
 # main command could be a method or and object set as a property
         
         if (!$subCmd) {
             if (method_exists($this, $mainCmd)) {
-                $reflection = new \ReflectionMethod($this, $mainCmd);
+                $reflection = new \ReflectionMethod($this, $mainCmd);echo $mainCmd;
                 if ($reflection->isPrivate()) {
                     throw new privateCommandException();
                 }

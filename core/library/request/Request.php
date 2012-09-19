@@ -2,86 +2,63 @@
 
 namespace core\library\request;
 
-require_once __DIR__ . "/../core.php";
-require_once __DIR__ ."/requestAtom.php";
-
 use core\library\Core;
 
-class Request extends Core{
+class Request extends Core {
     
     const REQUEST_URI = 'REQUEST_URI';
     
     const PATH_INFO = 'PATH_INFO';
     
     const QUERY_STRING = 'QUERY_STRING';
+
     
-    private $pathParts; 
+    public function __construct(
+		 \core\Globals $globals, 
+		 \core\library\request\requestAtomFactory $raf) {
+
+		$this->globals 				= $globals;
+		$this->request_atom_factory	= $raf;    
+	}
     
-    private $query_parts;
-    
-    private $server;
-    
-    protected $get;
-    
-    protected $post;
-    
-    private $files;
-    
-    public function __construct($server, $post_data,  $files) {
-        $this->server   = $server;
-        $this->files    = $files;
-        $this->post_data = $post_data;
-    }
-    
-    
-    private function loadGetData() {
-        $this->get = new requestAtom($this->query_parts);
-    }
-    
-    private function loadPostData() {
-        $this->post = new requestAtom($this->post_data);
-    }
-    
-    private function loadAnyData() {
-        $mixed = array_merge(
-            $this->query_parts, 
-            $this->post_data
-        );
-        $this->any = new requestAtom($mixed);
-    }
-    
-    public function paths() {
-        return $this->pathParts;
-    }
-    
-    public function load() {
-        $this->loadQueryParams();
-        $this->loadPathParams();
-        $this->loadGetData();
-        $this->loadPostData();
-        $this->loadAnyData();
-    }
-    
-    public function all() {
-        $ret = new \StdClass();
-        $ret->pathParts = $this->pathParts;
-        $ret->query_parts = $this->query_parts;
-        $ret->get = $this->get;
-        $ret->post = $this->post;
-        $ret->files = $this->files;
-        return $ret;
-    }
-    
+	private function loadGet() {
+		$this->loadQueryParams();
+		$this->get = $this->request_atom_factory->get($this->query_parts);
+	}
+	
+	
+	private function loadPost() {	
+		$this->post = $this->request_atom_factory->get($this->globals->post);
+	}
+
+	/**
+	 *   Build post or get values on first call. 
+	 */
+	public function __call($cmd, $args) {
+		try {
+			return parent::__call($cmd, $args);
+		} catch (\Exception $e) {
+			$full_command = 'load' . ucfirst($this->lastCommand());
+			if (!method_exists($this, $full_command)) {
+				throw new \Exception('Inexistent call:'.$cmd);
+			}
+			call_user_func_array(array($this, $full_command), $args );	
+			return parent::__call($cmd, $args);			
+		}	
+	}
+	
+  
+    /**
+     * Parse the QUERY_STRING from the SERVER global
+     */
     private function loadQueryParams() {
-        if ($this->query_parts !== NULL) {
-            return;
-        }
+		$server = $this->globals->server();
         $this->query_parts = array();
-        if (!array_key_exists(self::QUERY_STRING, $this->server)) {
+        if (!array_key_exists(self::QUERY_STRING, $server)) {
             return;
         }
 
-        $queryPartPairs = explode('&',  $this->server[self::QUERY_STRING]);
+        $queryPartPairs = explode('&',  $server[self::QUERY_STRING]);
         
         if (!count($queryPartPairs)) {
             return;
@@ -95,12 +72,16 @@ class Request extends Core{
         }
     }
     
+	/**
+	 * Parse the PATH_INFO from the SERVER global
+	 */
     private function loadPathParams() {
         $this->pathParts = array();
-        if (!array_key_exists(self::PATH_INFO, $this->server)) {
+		$server = $this->globals->server();
+        if (!array_key_exists(self::PATH_INFO, $server)) {
             return;
         }
-        $pathParts = explode('/',  $this->server[self::PATH_INFO]);
+        $pathParts = explode('/',  $server[self::PATH_INFO]);
         if (count($pathParts)) {
             foreach ($pathParts as $p) {
                 if (trim($p)) {

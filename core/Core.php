@@ -3,9 +3,7 @@
 
     use Symfony\Component\Yaml\Parser;
     use Symfony\Component\Yaml\Inline;
-    use Symfony\Component\DependencyInjection\ContainerBuilder;
-    use Symfony\Component\Config\FileLocator;
-    use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+
     
     use core\library\client\Client;
     use core\library\session\Session;
@@ -80,8 +78,8 @@
             
 # Load Tal
 
-            $tal_dir = self::$config->find('vendor/phptaldir');
-            $tal = new TalLoader($tal_dir);
+            //$tal_dir = self::$config->find('vendor/phptaldir');
+            $tal = new TalLoader();
             
 # Solutioner load
 

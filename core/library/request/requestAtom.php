@@ -1,7 +1,6 @@
 <?php
 namespace core\library\request;
 
-require_once __DIR__ . "/../core.php";
 use core\library\Core;
 
 class requestAtom extends Core {
@@ -12,7 +11,7 @@ class requestAtom extends Core {
         $this->data = $data;
     }
 
-    private function one($x) {
+    protected function one($x) {
         if (array_key_exists($x, $this->data)) {
             return $this->data[$x];
         }

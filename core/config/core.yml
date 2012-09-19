@@ -1,6 +1,11 @@
-vendor:
-    phptaldir: phptal/PHPTAL-1.2.2/
-    yamldir: yaml/
-    
-clientconfig: client_config_stuff_here
+parameters:
 
+services:
+    core.globals:
+        class: core\Globals
+    core.library.request.requestatomfactory:
+        class: core\library\request\requestAtomFactory
+    core.library.request.request:
+        class: core\library\request\Request
+        arguments: [ @core.globals, @core.library.request.requestatomfactory ]
+    
