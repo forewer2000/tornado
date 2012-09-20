@@ -1,16 +1,17 @@
 <?php
     namespace core;
 
-    require_once "yaml/Parser.php";
-    require_once "yaml/Inline.php";
-
     use Symfony\Component\Yaml\Parser;
     use Symfony\Component\Yaml\Inline;
+    use Symfony\Component\DependencyInjection\ContainerBuilder;
+    use Symfony\Component\Config\FileLocator;
+    use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+    
     use core\library\client\Client;
     use core\library\session\Session;
     use core\library\request\Request;
     use core\library\browser\Browser;
-        
+
 
     class Core extends Provider {
         
@@ -32,11 +33,13 @@
                          }'
                 );
             */
-            
+            $container = new ContainerBuilder();
+
             self::addClass("yaml", new Parser());
             //self::addModule("core_config", "core\Client" => $client_config);
             
 # Core load
+
 
             self::$config = new Configurator($core_config, 'yaml');
  
