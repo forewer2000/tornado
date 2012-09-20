@@ -34,6 +34,7 @@
             */
             
             self::addClass("yaml", new Parser());
+            //self::addModule("core_config", "core\Client" => $client_config);
             
 # Core load
 
