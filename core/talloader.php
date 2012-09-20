@@ -2,8 +2,6 @@
 
 namespace core;
 
-require_once "view-interface.php";
-
 class TalLoader implements  ViewInterface{
 
     private $tal_dir;

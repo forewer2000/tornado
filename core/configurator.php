@@ -1,7 +1,7 @@
 <?php
 namespace core;
 
-class Configurator {
+class Configurator extends Provider{
     
     private $parser;
     
@@ -13,10 +13,11 @@ class Configurator {
     
     private $raw_config;
     
-    public function __construct($config_url) {
+    public function __construct($config_url, $parser_id) {
         
         $this->config_url   = $config_url;
         $this->loaded       = false;
+        $this->parser_id    = $parser_id;
         
     }
 
@@ -40,12 +41,13 @@ class Configurator {
         $this->raw_config = @file_get_contents($this->config_url);
     }
     
+    public function setParserId($parser_id) {
+        $this->parser_id = $parser_id;
+    }
+    
     private function parse() {
-        if (!$this->parser || !is_object($this->parser)) {
-            throw new \Exception();
-        }
-        
-        $this->config = $this->parser->parse($this->raw_config);
+        $parser = $this->singleton($this->parser_id);
+        $this->config = $parser->parse($this->raw_config);
         $this->parsed = true;
     }
     

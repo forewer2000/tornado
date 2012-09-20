@@ -1,18 +1,9 @@
 <?php
     namespace core;
-    
+
     require_once "yaml/Parser.php";
     require_once "yaml/Inline.php";
-    require_once "configurator.php";
-    require_once "application.php";
-    require_once "solutioner.php";
-    require_once "tal-loader.php";
-    require_once "library/client/client.php";
-    require_once "library/session/session.php";
-    require_once "library/request/request.php";
-    require_once "library/browser/browser.php";
 
-    
     use Symfony\Component\Yaml\Parser;
     use Symfony\Component\Yaml\Inline;
     use core\library\client\Client;
@@ -20,7 +11,8 @@
     use core\library\request\Request;
     use core\library\browser\Browser;
         
-    class Core {
+
+    class Core extends Provider {
         
         private static $config;
         
@@ -30,13 +22,26 @@
         
         static function init($core_config) {
             
+            /*self::setModules(
+                array(
+                    'yaml'=>
+                        '{
+                            namespace:"\\", 
+                            deps:["yaml/Parser", "yaml/Inline"],
+                            class: "Parser"
+                         }'
+                );
+            */
+            
+            self::addClass("yaml", new Parser());
+            
 # Core load
 
-            $yaml = new Parser();
-            self::$config = new Configurator($core_config);
-            self::$config->addParser($yaml);
+            self::$config = new Configurator($core_config, 'yaml');
+ 
             
-            
+            //self::config = $this->provider->factory('configurator');
+
 # Client Load
 
             $client_config = self::$config->find('clientconfig');            
@@ -64,10 +69,9 @@
 # Application load
             
             self::$app = new Application(getcwd());
-            $app_configurator = new Configurator(self::$app->configPath());
-            $app_configurator->addParser($yaml);
-            $paths = self::$client->browserRequestPaths();
-            $app_configurator->addValue('solution', array_shift($paths));
+            $app_configurator = new Configurator(self::$app->configPath(), 'yaml');
+            $uri_path = self::$client->browserRequestPaths();
+            $app_configurator->addValue('solution', array_shift($uri_path));
             self::$app->attachConfigurator($app_configurator);
             
 # Load Tal
@@ -78,8 +82,7 @@
 # Solutioner load
 
             $solutioner = new Solutioner(self::$app);
-            $solutioner_configurator = new Configurator($solutioner->configFile());
-            $solutioner_configurator->addParser($yaml);
+            $solutioner_configurator = new Configurator($solutioner->configFile(), 'yaml');
             $solutioner->attachConfigurator($solutioner_configurator);
             $solutioner->attachView($tal);
             $solutioner->dispatch();
