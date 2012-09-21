@@ -2,8 +2,6 @@
 
 namespace core\library\browser;
 
-
-require_once __DIR__ . "/../core.php";
 use core\library\Core;
 
 class Browser extends Core{
@@ -14,17 +12,12 @@ class Browser extends Core{
 
     private $userAgent;
 
-    public function __construct($server) {
-        $this->server = $server;
-        if (array_key_exists(self::USER_AGENT, $server)) {
-            $this->setUserAgent($server[self::USER_AGENT]);
-        }
-
-        $this->cleanUp();
+    public function __construct(\core\Globals $globals) {
+       
     }
     
     
-    public function attachRequest($request) {
+    public function attachRequest(\core\library\request\Request $request) {
         $this->request = $request;
     }
     

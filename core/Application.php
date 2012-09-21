@@ -6,30 +6,19 @@ class Application {
     private $base_path;
     
     private $app_path;
+  
     
-    private $config_file;
-    
-    const CONFIG_PATH = 'config/site.yml';
-    
-    public function __construct($index_dir) {
-        $this->index_dir = $index_dir;
+    public function __construct($client) {
+        $this->client = $client;
     }
 
-    public function attachConfigurator($configurator) {
-        $this->configurator = $configurator;
+    public function getSolution() {
+        return $this->client->browserRequestGetFirstUriPart();
     }
-
-    public function solution() {
-        $solution = $this->configurator->find('solution');
-        if (!$solution) {
-            $solution = $this->configurator->find('default_solution');
-        }
-        return $solution;
-    }
-    
+        
     public function appPath() {
         if (!$this->app_path) {
-            $this->app_path = $this->index_dir .'/../';
+            $this->app_path = getcwd() .'/../';
         }
         return $this->app_path;
     }
@@ -39,9 +28,12 @@ class Application {
     }
     
     public function solutionPath() {
-        return $this->appPath() . 'solutions/'. $this->solution();
+        return $this->appPath() . 'solutions/'. $this->getSolution();
     }
-    
+ 
+    public function getView() {
+        return $this->appPath()."view/home.html";
+    }
 }
 
 ?>

@@ -5,6 +5,7 @@ define('CORE_PATH'  , ROOT_PATH . 'core/');
 define('VENDOR_PATH', ROOT_PATH . 'vendor/');
 define('CORE_CONFIG', CORE_PATH . 'config/core.yml');
 define('TAL_PATH', VENDOR_PATH . 'phptal/');
+define('APP_PATH', getcwd() . '/../');
 
 set_include_path(
     implode(PATH_SEPARATOR,
@@ -25,16 +26,18 @@ spl_autoload_register(function ($class) {
 
 });
 
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-$container = new ContainerBuilder();
-$loader = new YamlFileLoader($container, new FileLocator(__DIR__));
-$loader->load('config/core.yml');
+$core_container = new ContainerBuilder();
+$core_loader = new YamlFileLoader($core_container, new FileLocator(__DIR__));
+$core_loader->load('config/core.yml');
 
+$site_container = new ContainerBuilder();
+$site_loader = new YamlFileLoader($site_container, new FileLocator(__DIR__));
+$site_loader->load(APP_PATH . 'config/site.yml');
 
-$request = $container->get('core.library.request.request');
-echo $request->getOne('alma');
-echo $request->getOne('korte');
+$solutioner = $core_container->get('core.solutioner');
+$solutioner->dispatch();
+echo $solutioner->getResult();

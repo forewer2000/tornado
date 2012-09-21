@@ -8,4 +8,25 @@ services:
     core.library.request.request:
         class: core\library\request\Request
         arguments: [ @core.globals, @core.library.request.requestatomfactory ]
-    
+    core.library.browser.browser:
+        class: core\library\browser\Browser
+        arguments: [ @core.globals ]
+        calls:
+            - [attachRequest, [@core.library.request.request]]
+    core.library.client.client:
+        class: core\library\client\Client
+        calls:
+            - [attachBrowser, [@core.library.browser.browser]]
+    vendor.phptal.phptal:
+        class: PHPTAL
+    core.talloader:
+        class: core\TalLoader
+        arguments: [ @vendor.phptal.phptal ]
+    core.application:
+        class: core\Application
+        arguments: [ @core.library.client.client ]
+    core.solutioner:
+        class: core\Solutioner
+        arguments: [ @core.application ]
+        calls:
+            - [attachView, [@core.talloader]]

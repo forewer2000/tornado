@@ -1,7 +1,7 @@
 <?php
 namespace core;
 
-class Configurator extends Provider{
+class Configurator {
     
     private $parser;
     

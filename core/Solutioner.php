@@ -7,8 +7,6 @@ class Solutioner {
 
     private $config_file;
     
-    private $solution_file;
-    
     private $solution;
     
     private $configurator;
@@ -39,7 +37,7 @@ class Solutioner {
     }
     
     public function setSolutionFile() {
-        $this->solution_file = $this->app->solutionPath().'/'.$this->app->solution().'.php';
+        $this->solution_file = $this->app->solutionPath().'/'.$this->app->getSolution().'.php';
     }
     
     public function configFile() {
@@ -49,29 +47,24 @@ class Solutioner {
         return $this->config_file;
     }
     
-    public function solutionFile() {
-        if (!$this->solution_file) {
+    public function getSolutionFile() {
+        if (!property_exists($this, 'solution_file')) {
             $this->setSolutionFile();
         }
         return $this->solution_file;
     }
     
     public function dispatch() {
-        if (!file_exists($this->solutionFile())) {
-            throw new \Exception("Solution file doesn't exists:".$this->solutionFile());
-        }
-        require_once $this->solutionFile();
-        $solution = \ucfirst(\strtolower($this->app->solution()));
+        require_once $this->getSolutionFile();
+        $solution = \ucfirst(\strtolower($this->app->getSolution()));
         $solution_obj = new $solution;
-        
-        $this->view->attachTemplate($this->app->appPath(). 'view/home.html');
-        $this->view->loadRenderer();
-        $solution_obj->view = $this->view->renderer();
+        $this->view->attachTemplate($this->app->getView());
+        $solution_obj->view = $this->view->getRenderer();
         $solution_obj->index();
         $this->result = $this->view->render();
     }
     
-    public function result() {
+    public function getResult() {
         return $this->result;
     }
     /*

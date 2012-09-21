@@ -1,8 +1,6 @@
 <?php
-
 namespace core\library\client;
 
-require_once __DIR__ . "/../core.php";
 use core\library\Core;
 
 class Client extends Core {
@@ -15,16 +13,14 @@ class Client extends Core {
 
     private $network;
 
-    
+
 #client bindid to session for identification and temporary storage
     
     protected $session;
     
-    private $id;
+
     
-    
-    public function __construct($config) {
-        $this->config = $config;
+    public function __construct() {
     }
 
     public function attachBrowser($browser) {
@@ -34,17 +30,7 @@ class Client extends Core {
     public function attachSession($session) {
         $this->session = $session;
     }
-
-    public function attachRequest($request) {
-        $this->request = $request;
-    }
     
-#client has an identification number. Currently this is the session ID
-
-    public function id() {
-        return $this->id;
-    }
-
     public function send($content) {
         #to do | headers and all the other stuff
         echo $content;
