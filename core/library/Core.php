@@ -42,7 +42,7 @@ abstract class Core {
         
         if (!$subCmd) {
             if (method_exists($this, $mainCmd)) {
-                $reflection = new \ReflectionMethod($this, $mainCmd);echo $mainCmd;
+                $reflection = new \ReflectionMethod($this, $mainCmd);
                 if ($reflection->isPrivate()) {
                     throw new privateCommandException();
                 }
@@ -60,7 +60,7 @@ abstract class Core {
 
         $subCmd = lcfirst($subCmd);
         try {
-            return call_user_func_array(array($this->$mainCmd, $subCmd), $args);
+            return call_user_func_array(array($this->{$mainCmd}, $subCmd), $args);
         } catch (invalidCommandException $e) {
             throw new invalidSubcommandException();
         } catch (nonexistentCommandException $e) {
